@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+  <!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"> <![endif]-->
+  <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+
+    <title>MinMap</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+    
+<div class="container">
+
+<div class="navbar navbar-default col-md-4 col-md-offset-4" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/login">Sign-in with Faithlife</a></li>
+               <li><a href="/login">About</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </div>
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron col-md-4 col-md-offset-4">
+        <div align="center"><img src="http://natesmoyer.com/wp-content/uploads/2014/03/MinMap-Logo-Color1-e1395530836122.png" style="max-width:100%"></div>
+    
+    <div class="form-group">
+      <select id="ministryCategory" class="form-control" placeholder="Select ministry category">
+        <option value="" disabled selected>Select ministry category</option>
+        <option>Shelter</option>
+        <option>Food</option>
+        <option>Physical/Mental Health</option>
+        <option>Career Services</option>
+        <option>Housing</option>
+        <option>Education</option>
+        <option>Neighborhood Watch</option>
+        <option>Legal</option>
+        <option>Bible Studies</option>
+        <option>Worship</option>
+      </select>
+    </div>
+        <div align="center"><a class="btn btn-lg btn-primary" id="btnInit" role="button"  data-toggle="modal" data-target="#myModal">Check-in your service here</a></div>
+
+    </div>
+    
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Thank you!</h4>
+      </div>
+      <div class="modal-body">
+        Your submission has been successfully added to <strong>MinMap</strong>.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+      <script>
+        $(window).ready(function(){
+            $("#btnInit").click(initiate_geolocation);
+        });
+ 
+        function initiate_geolocation() {
+            navigator.geolocation.getCurrentPosition(handle_geolocation_query);
+        }
+ 
+        function handle_geolocation_query(position){
+          
+          var currentdate = new Date(); 
+          var datetime = currentdate.getFullYear() + "-"
+                + ('0' + (currentdate.getMonth()+1)).slice(-2)  + "-" 
+                + ('0' + currentdate.getDate()).slice(-2) + "T"  
+                + ('0' + (currentdate.getHours())).slice(-2) + ":"  
+                + ('0' + (currentdate.getMinutes())).slice(-2) + ":" 
+                + ('0' + (currentdate.getSeconds())).slice(-2);
+
+            var data = {"channel":"webapp",
+            "dateTime": datetime,
+            "lonlat" : [ position.coords.longitude, position.coords.latitude ],
+                        "category" : $("#ministryCategory").val()};
+                  
+            $.ajax({ 
+             type: "POST",
+             dataType: "json",
+             url: "https://elasticsearch-imprint.rhcloud.com/minmap/checkin/",
+             data: JSON.stringify(data),
+             success: function(data){        
+                console.log(data);
+             }
+            });
+        }
+    </script>
+</html>
+
