@@ -75,8 +75,19 @@
         <h4 class="modal-title" id="myModalLabel">Thank you!</h4>
       </div>
       <div class="modal-body">
-        Your submission has been successfully added to <strong>MinMap</strong>.
+                Your submission has been successfully added to <strong>MinMap</strong>.
+                  <br /><br />
+    Enhance your check-in by adding tags
+    <br /><br />
+    <input type="text" id="tags">
+    </input>
+    <br /><br />
       </div>
+    <br /><br />
+    Enhance your check-in by adding tags.
+    <input type="text" id="tags">
+    </input>
+    <br /><br />
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
@@ -95,6 +106,7 @@
     <% } %>
     ], "width": "100%"
     });
+    $("#tags").select2({"tags": [], "width": "100%", "height": "300px" });
    </script>
       <script>
         $(window).ready(function(){
