@@ -16,7 +16,7 @@ var app = express()
 			method: 'POST',
 			path: '/oauth/v1/temporarytoken',
 			headers: {
-				Authorization: 'OAuth oauth_consumer_key="' + consumerToken + '", oauth_signature="' + consumerSecret + '%26", oauth_signature_method="PLAINTEXT", oauth_version="1.0", oauth_callback="http://minmap-imprint.rhcloud.com/verify"'
+				Authorization: 'OAuth oauth_consumer_key="' + consumerToken + '", oauth_signature="' + consumerSecret + '%26", oauth_signature_method="PLAINTEXT", oauth_version="1.0", oauth_callback="http://app.minmap.co/verify"'
 			}
 		}, function(temporaryTokenResponse) {
 			var responseData = '';
